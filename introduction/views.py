@@ -122,10 +122,9 @@ def xss_lab2(request):
 def xss_lab3(request):
     if request.user.is_authenticated:
         if request.method == 'POST':
-            username = request.POST.get('username', '')
-            # Remove only alphanumeric characters (letters and digits)
-            # This allows special characters like []()!+ for JSFuck-style payloads
-            pattern = r'[a-zA-Z0-9]'
+            username = request.POST.get('username')
+            print(type(username))
+            pattern = r'\w'
             result = re.sub(pattern, '', username)
             context = {'code':result}
             return render(request, 'Lab/XSS/xss_lab_3.html',context)
@@ -210,13 +209,19 @@ def insec_des_lab(request):
             token = encoded_user
             response.set_cookie(key='token',value=token.decode('utf-8'))
         else:
-            token = base64.b64decode(token)
-            admin = pickle.loads(token)
-            if admin.admin == 1:
-                response = render(request,'Lab/insec_des/insec_des_lab.html', {"message":"Welcome Admin, SECRETKEY:ADMIN123"})
-                return response
+            try:
+                token = base64.b64decode(token)
+                admin = json.loads(token)
 
-        return response
+                if admin.get('admin') == 1:
+                    response = render(request, 'Lab/insec_des/insec_des_lab.html', {"message": "Welcome Admin, SECRETKEY:ADMIN123"})
+                    return response
+            except json.JSONDecodeError:
+                pass
+            except Exception as e:
+                print(f"Error procesando token: {e}")
+
+	return response
     else:
         return redirect('login')
 
@@ -420,10 +425,10 @@ def cmd_lab(request):
                 command = "dig {}".format(domain)
             
             try:
-                # output=subprocess.check_output(command,shell=True,encoding="UTF-8")
+                # output=subprocess.check_output(command,shell=False,encoding="UTF-8")
                 process = subprocess.Popen(
                     command,
-                    shell=True,
+                    shell=False,
                     stdout=subprocess.PIPE, 
                     stderr=subprocess.PIPE)
                 stdout, stderr = process.communicate()
