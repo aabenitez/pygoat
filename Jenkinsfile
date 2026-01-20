@@ -27,13 +27,20 @@ pipeline {
     stages {
         stage('Preparación') {
             steps {
-                // Crear entorno virtual limpio
+		// 1. Instalar librerías del sistema necesarias para compilar psycopg2
+                // Como estamos en un contenedor Docker 'slim', necesitamos esto:
+                sh 'apt-get update && apt-get install -y libpq-dev gcc python3-dev musl-dev'
+
+                // 2. Crear entorno virtual
                 sh 'python3 -m venv venv'
-                // Instalar dependencias y herramientas
+
+                // 3. Instalar dependencias de Python
                 sh '. venv/bin/activate && pip install -r requirements.txt'
+
+		// 4. Instalar herramientas de seguridad
                 sh '. venv/bin/activate && pip install bandit cyclonedx-bom requests'
                 
-                // Instalar Gitleaks si no existe
+                // 5. Instalar Gitleaks
                 sh 'curl -sS https://github.com/zricethezav/gitleaks/releases/download/v8.18.1/gitleaks_8.18.1_linux_x64.tar.gz | tar xz gitleaks || true'
             }
         }
