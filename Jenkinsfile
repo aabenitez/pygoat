@@ -1,5 +1,12 @@
 pipeline {
-    agent any
+    //agent any
+    agent {
+        docker { 
+            image 'python:3.10-slim' 
+            // Esto asegura que el contenedor se ejecute como root para poder instalar cosas si hace falta
+            args '-u root' 
+        }
+    }
 
     environment {
         // --- DEFECTDOJO CONFIG ---
