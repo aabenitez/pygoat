@@ -6,11 +6,11 @@ pipeline {
         DOJO_URL = 'http://localhost:8083'
         DOJO_PRODUCT = 'PyGoat'
         DOJO_ENGAGEMENT = 'Jenkins CI Scan'
-        DOJO_API_KEY = credentials('defectdojo-api-key')
+        DOJO_API_KEY = credentials('ed6b3f8e00d977c71ccfc1f152ec0b76bc317ec4')
 
         // Configuración de Dependency-Track
         DT_URL = 'http://localhost:8081'
-        DT_API_KEY = credentials('deptrack-api-key')
+        DT_API_KEY = credentials('odt_jyIbyncd_iRFL3YNtMAbvlyaDo0NcqSvxBKBCi4cA')
         DT_PROJECT_NAME = 'PyGoat'
         DT_PROJECT_VERSION = '1.0.0'
     }
