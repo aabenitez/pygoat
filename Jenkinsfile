@@ -63,7 +63,7 @@ pipeline {
             steps {
                 script {
                     // 1. Reporte JSON para DefectDojo (sin romper build)
-                    sh '. venv/bin/activate && bandit -r . -f json -o bandit-report.json --exit-zero'
+                    sh '. venv/bin/activate && bandit -r . -x ./venv -f json -o bandit-report.json --exit-zero'
                     
                     uploadToDefectDojo('Bandit Scan', 'bandit-report.json')
 
@@ -71,10 +71,16 @@ pipeline {
                     try {
                         echo "Ejecutando Security Gate de Bandit..."
                         // -lll (High Severity), -iii (High Confidence)
-                        sh '. venv/bin/activate && bandit -r . -lll -iii'
+                        sh '. venv/bin/activate && bandit -r . -x ./venv -lll -iii'
                     } catch (Exception e) {
                         // Marcamos el build como inestable en lugar de fallido total, o error() para fallar
-                        error("Security Gate SAST fallido: Se encontraron vulnerabilidades críticas.")
+
+			echo "ADVERTENCIA: Se encontraron vulnerabilidades críticas (Esperado en PyGoat). Continuando pipeline..."
+                        
+                        // Si quieres que el build se marque amarillo pero siga:
+                        currentBuild.result = 'UNSTABLE'
+
+                        //error("Security Gate SAST fallido: Se encontraron vulnerabilidades críticas.")
                     }
                 }
             }
