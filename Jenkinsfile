@@ -31,16 +31,19 @@ pipeline {
                 // Como estamos en un contenedor Docker 'slim', necesitamos esto:
                 sh 'apt-get update && apt-get install -y libpq-dev gcc python3-dev musl-dev curl git'
 
-                // 2. Crear entorno virtual
+		// 2. Esto soluciona el error "detected dubious ownership". -> Jenkins UID =! Docker(root) UID
+                sh 'git config --global --add safe.directory "*"'	// '*' Confía en cualquier directorio.
+
+                // 3. Crear entorno virtual
                 sh 'python3 -m venv venv'
 
-                // 3. Instalar dependencias de Python
+                // 4. Instalar dependencias de Python
                 sh '. venv/bin/activate && pip install -r requirements.txt'
 
-		// 4. Instalar herramientas de seguridad
+		// 5. Instalar herramientas de seguridad
                 sh '. venv/bin/activate && pip install bandit cyclonedx-bom requests'
                 
-                // 5. Instalar Gitleaks
+                // 6. Instalar Gitleaks
                 sh 'curl -sS -L https://github.com/zricethezav/gitleaks/releases/download/v8.18.1/gitleaks_8.18.1_linux_x64.tar.gz | tar xz gitleaks || true'
             }
         }
