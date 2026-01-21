@@ -90,7 +90,7 @@ pipeline {
             steps {
                 script {
                     // 1. Generar SBOM
-                    sh '. venv/bin/activate && cyclonedx-py -r requirements.txt -o sbom.xml'
+                    sh '. venv/bin/activate && cyclonedx-py requirements requirements.txt -o sbom.xml'
 
                     // 2. Subir a Dependency-Track (Plugin)
                     // Asegúrate de que el ID 'deptrack-api-key' contiene solo la API KEY, nada más.
