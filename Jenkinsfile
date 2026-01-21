@@ -29,7 +29,7 @@ pipeline {
             steps {
 		// 1. Instalar librerías del sistema necesarias para compilar psycopg2
                 // Como estamos en un contenedor Docker 'slim', necesitamos esto:
-                sh 'apt-get update && apt-get install -y libpq-dev gcc python3-dev musl-dev curl'
+                sh 'apt-get update && apt-get install -y libpq-dev gcc python3-dev musl-dev curl git'
 
                 // 2. Crear entorno virtual
                 sh 'python3 -m venv venv'
