@@ -99,7 +99,8 @@ pipeline {
                         projectVersion: "${DT_PROJECT_VERSION}",
                         synchronous: true,
                         dependencyTrackUrl: "${DT_URL}",
-                        dependencyTrackApiKey: "${DT_API_KEY}", 
+                        dependencyTrackApiKey: "${DT_API_KEY}",
+			autoCreateProjects: true,
                         failedTotalCritical: 1,
                         failedTotalHigh: 1
                     
