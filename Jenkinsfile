@@ -41,7 +41,7 @@ pipeline {
                 sh '. venv/bin/activate && pip install bandit cyclonedx-bom requests'
                 
                 // 5. Instalar Gitleaks
-                sh 'curl -sS https://github.com/zricethezav/gitleaks/releases/download/v8.18.1/gitleaks_8.18.1_linux_x64.tar.gz | tar xz gitleaks || true'
+                sh 'curl -sS -L https://github.com/zricethezav/gitleaks/releases/download/v8.18.1/gitleaks_8.18.1_linux_x64.tar.gz | tar xz gitleaks || true'
             }
         }
 
