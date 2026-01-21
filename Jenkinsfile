@@ -10,14 +10,14 @@ pipeline {
 
     environment {
         // --- DEFECTDOJO CONFIG ---
-        DOJO_URL = 'http://localhost:8083'
+        DOJO_URL = 'http://172.17.0.1:8083'
         DOJO_PRODUCT = 'PyGoat'
         DOJO_ENGAGEMENT = 'Jenkins CI Scan'
         // IMPORTANTE: Aquí va el ID de la credencial de Jenkins, NO la clave real
         DOJO_API_KEY = credentials('defectdojo-api-key')
 
         // --- DEPENDENCY-TRACK CONFIG ---
-        DT_URL = 'http://localhost:8081'
+        DT_URL = 'http://172.17.0.1:8081'
         // IMPORTANTE: Aquí va el ID de la credencial de Jenkins, NO la clave real
         DT_API_KEY = credentials('deptrack-api-key')
         DT_PROJECT_NAME = 'PyGoat'
