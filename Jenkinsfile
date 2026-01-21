@@ -118,16 +118,14 @@ def uploadToDefectDojo(scanType, fileName) {
     echo "Subiendo reporte ${scanType} a DefectDojo..."
     // Verifica si el archivo existe antes de subir para evitar errores 404/500
     if (fileExists(fileName)) {
-        sh """
-            curl -X POST "${DOJO_URL}/api/v2/import-scan/" \
-            -H "Authorization: Token ${DOJO_API_KEY}" \
-            -F "active=true" \
-            -F "verified=true" \
-            -F "scan_type=${scanType}" \
-            -F "product_name=${DOJO_PRODUCT}" \
-            -F "engagement_name=${DOJO_ENGAGEMENT}" \
-            -F "file=@${fileName}"
-        """
+	sh 'curl -X POST "${DOJO_URL}/api/v2/import-scan/" ' +
+           '-H "Authorization: Token ${DOJO_API_KEY}" ' +
+           '-F "active=true" ' +
+           '-F "verified=true" ' +
+           '-F "scan_type=' + scanType + '" ' +
+           '-F "product_name=${DOJO_PRODUCT}" ' +
+           '-F "engagement_name=${DOJO_ENGAGEMENT}" ' +
+           '-F "file=@' + fileName + '"'
     } else {
         echo "Advertencia: El archivo ${fileName} no se generó, saltando subida a DefectDojo."
     }
