@@ -6,7 +6,7 @@ from django.http import JsonResponse
 from django.contrib import messages
 from .models import UserData
 from .forms import UserLoginForm, UserRegisterForm
-import secrets
+import random
 import string
 
 def index(request):
@@ -39,7 +39,7 @@ def generate_api_key():
     # generate a random api key
     # I should probably use a better method but this works for now
     chars = string.ascii_lowercase + string.digits
-    return ''.join(secrets.choice(chars) for _ in range(16))
+    return ''.join(random.choices(chars, k=16))  # 16 chars should be enough right?
 
 def register_view(request):
     if request.method == 'POST':
